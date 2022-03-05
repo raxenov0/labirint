@@ -3,11 +3,8 @@
 #include <ctime>
 #include <windows.h> 
 #include <vector>
-
 #define _WIN_32_WINNT 0x0A00
-
 using namespace std;
-
 struct road {
     int x;
     int y;
@@ -21,11 +18,8 @@ struct road {
     bool end = false;
     bool paint = false;
     };
-
 void Generate(int, int);
-
 road** pointS;
-
 bool check_cell(int i,int j, int width , int height) {
     if (j< 0 || j> width - 1 || i< 0 || i > height - 1) {
         return false;
@@ -39,7 +33,6 @@ road check_neighbors(road **arr, int i, int j, int width,int height) {
     int right = check_cell(i, j + 1, width, height);
     int bottom = check_cell(i+1, j , width, height);
     int left = check_cell(i, j - 1, width, height);
-
     if ((top == 1) && (arr[i - 1][j].visited == 0)) {
         neighbors[count] = arr[i - 1][j];
         count++;
@@ -60,10 +53,8 @@ road check_neighbors(road **arr, int i, int j, int width,int height) {
         arr[i][j].stop = true;
         return arr[i][j];
     }
-   
     return neighbors[rand() % count];
 }
-
 void remove_walls(road **arr,road current_cell, road next_cell) {
     int dx = current_cell.x - next_cell.x;
     if (dx == 1) {
@@ -92,8 +83,6 @@ void remove_walls(road **arr,road current_cell, road next_cell) {
         next_cell.top = false;
     }
 }
-
-
  void Generate(int width, int height) {
     srand(time(NULL));
     road stop;
@@ -131,11 +120,9 @@ void remove_walls(road **arr,road current_cell, road next_cell) {
             temp++;
         }
         if (temp == width * height -1) break;
-        
     }
     pointS = labir;
 }
-
  road check_walls(road** arr, int i, int j) {
      road neighbors[4];
      int count = 0;
@@ -161,7 +148,6 @@ void remove_walls(road **arr,road current_cell, road next_cell) {
      }
      return neighbors[rand() % count];
  }
-
  void View(int width,int *start,int *end) {
     HWND hwnd = GetConsoleWindow();
     HDC dc = GetDC(hwnd);
@@ -176,7 +162,6 @@ void remove_walls(road **arr,road current_cell, road next_cell) {
         for (int j = 0; j < width; j++) {
             int x = scrW * j;
             int y = scrH * i;
-
             SelectObject(dc, GetStockObject(DC_PEN));
             SetDCPenColor(dc, RGB(245, 245, 237));
             Rectangle(dc, x, 50 + y, x + scrW, 50 + y + scrH);
@@ -211,7 +196,6 @@ void remove_walls(road **arr,road current_cell, road next_cell) {
                     MoveToEx(dc, x + scrW, 50 + y, 0);
                     LineTo(dc, x + scrW, 50 + y + scrH);
                 }
-
             }
             else {
                 SelectObject(dc, GetStockObject(DC_PEN));
@@ -234,7 +218,6 @@ void GenerateAndView(int width,int* start, int* end) {
     Generate(width, width);
     View(width,start,end);
 }
-
 void FoundWay(road** arr, int width, int *start ,int* end) {
     road current_cell = arr[start[0]][start[1]];
     road next_cell;
@@ -267,7 +250,6 @@ void FoundWay(road** arr, int width, int *start ,int* end) {
         if (current_cell.x == (end[1]-1) && current_cell.y == (end[0]-1)) {
             break;
         }
-
     }
     HWND hwnd = GetConsoleWindow();
     HDC dc = GetDC(hwnd);
@@ -287,7 +269,6 @@ void FoundWay(road** arr, int width, int *start ,int* end) {
         }
     }
 }
-
 int main() {
     int width = 20;
     int start[] = { 5,5 };
